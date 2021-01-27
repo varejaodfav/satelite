@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  postgresql:
+    image: docker.io/postgres:alpine
+    container_name: postgresql
+
+    tty: true
+    stdin_open: true
+
+    ports:
+      - 5432:5432
+
+    restart: always
+
+    environment:
+      - POSTGRES_DB_FILE=/run/secrets/psql_database
+      - POSTGRES_PASSWORD_FILE=/run/secrets/psql_password
+
+    secrets:
+      - psql_database
+      - psql_password
+
+    networks:
+      - satelite
+
+  solr:
+    image: docker.io/solr:8.6
+    container_name: solr
+
+    tty: true
+    stdin_open: true
+
+    ports:
+      - 8983:8983
+
+    restart: always
+
+    networks:
+      - scamanto
+
+  redis:
+    image: docker.io/redis:alpine
+    container_name: redis
+
+    tty: true
+    stdin_open: true
+
+    ports:
+      - 6379:6379
+
+    restart: always
+
+    networks:
+      - scamanto
+
+secrets:
+  psql_database:
+    file: docker_secrets/psql_database.txt
+  psql_password:
+    file: docker_secrets/psql_password.txt
+
+networks:
+  satelite:
+    driver: 'bridge'
+    ipam:
+      config:
+        - subnet: 14.11.90.0/28

@@ -1,0 +1,70 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "_"
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": [
+          "PascalCase"
+        ],
+        "custom": {
+          "regex": "^I[A-Z]",
+          "match": true
+        }
+      }
+    ],
+    "no-useless-constructor": "off",
+    "no-console": "off",
+    "camelcase": "off",
+    "prettier/prettier": "error",
+    "class-methods-use-this": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never"
+      }
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        "message": "Unexpected property on console object was called"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  }
+}
