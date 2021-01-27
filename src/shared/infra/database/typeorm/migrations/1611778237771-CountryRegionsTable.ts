@@ -5,11 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class CitiesTable1611778583447 implements MigrationInterface {
+export default class CountryRegionsTable1611778237771
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'cities',
+        name: 'country_regions',
         columns: [
           {
             name: 'id',
@@ -19,34 +20,16 @@ export default class CitiesTable1611778583447 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'state_id',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
             name: 'name',
             type: 'varchar',
-            length: '60',
+            length: '12',
             isNullable: false,
           },
           {
-            name: 'area_km2',
-            type: 'numeric',
-            precision: 8,
-            scale: 3,
-            isNullable: true,
-          },
-          {
-            name: 'is_state_capital',
-            type: 'boolean',
+            name: 'abbreviation',
+            type: 'char',
+            length: '2',
             isNullable: false,
-            default: false,
-          },
-          {
-            name: 'is_country_capital',
-            type: 'boolean',
-            isNullable: false,
-            default: false,
           },
           {
             name: 'created_at',
@@ -63,12 +46,12 @@ export default class CitiesTable1611778583447 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'cities',
+      'country_regions',
       new TableForeignKey({
-        name: 'fk_stateId_cities',
-        columnNames: ['state_id'],
+        name: 'fk_countryId_countryRegions',
+        columnNames: ['country_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'states',
+        referencedTableName: 'countries',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
@@ -76,7 +59,10 @@ export default class CitiesTable1611778583447 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('cities', 'fk_stateId_cities');
-    await queryRunner.dropTable('cities');
+    await queryRunner.dropForeignKey(
+      'country_regions',
+      'fk_countryId_countryRegions',
+    );
+    await queryRunner.dropTable('country_regions');
   }
 }

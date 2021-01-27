@@ -5,11 +5,12 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class StatesTable1611778453231 implements MigrationInterface {
+export default class CountryStatesTable1611778453231
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'states',
+        name: 'country_states',
         columns: [
           {
             name: 'id',
@@ -50,12 +51,12 @@ export default class StatesTable1611778453231 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'states',
+      'country_states',
       new TableForeignKey({
-        name: 'fk_regionId_states',
+        name: 'fk_regionId_countryStates',
         columnNames: ['region_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'regions',
+        referencedTableName: 'country_regions',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
@@ -63,7 +64,10 @@ export default class StatesTable1611778453231 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('states', 'fk_regionId_states');
-    await queryRunner.dropTable('states');
+    await queryRunner.dropForeignKey(
+      'country_states',
+      'fk_regionId_countryStates',
+    );
+    await queryRunner.dropTable('country_states');
   }
 }
